@@ -1,6 +1,8 @@
 let creator = function(){
     Array.prototype.group = function(callback){
-        console.log();
+        if (typeof callback != 'function') {
+            throw new Error('Debe recibir un callback como parámetro')
+        }
         let item = {}
         for (let itemDelArray of this) {
             // Limpieza de datos que vengan de una DB
@@ -28,6 +30,43 @@ let creator = function(){
             }
         }
         return item;
+    }
+
+    Array.prototype.randomQ = function (n){
+        if(typeof n === "number"){
+            let data = this;
+            let currentIndex = data.length,
+                randomIndex;
+            while (currentIndex != 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+                [data[currentIndex], data[randomIndex]] = [
+                    data[randomIndex],
+                    data[currentIndex],
+                ];
+            };
+            return data.filter((p, index)=> index < n);
+        } else {
+            throw new Error("Debe recibir un parámetro numérico y se ha recibido un "+ typeof n)
+        }
+    }
+    
+    Array.prototype.randomize = function (){
+        let array = this;
+        let currentIndex = array.length,
+            randomIndex;
+        // El while hará la cuenta regresiva para ir cambiando los elementos
+        while (currentIndex != 0) {
+            // Escojo un elemento aleatorio
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+            // Y lo cambio por el elemento actual del index
+            [array[currentIndex], array[randomIndex]] = [
+                array[randomIndex],
+                array[currentIndex],
+            ];
+        }
+        return array;
     }
 }
 module.exports = creator();
